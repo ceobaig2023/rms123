@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Hotel</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="navbar"></header>
+        <!-- <div>
+            <a href="index.html">Rooms</a>
+            <a href="checkin.html">Check-In</a>
+        </div> -->
+        <button class="drawer-btn" onclick="toggleDrawer()">☰</button>
+    </header>
+    
+    <!-- Right-side drawer -->
+    <div id="rightDrawer" class="drawer">
+        <span class="close-btn" onclick="toggleDrawer()">✖</span>
+        <a href="index.html">Rooms</a>
+        <a href="checkin.html">Check-In</a>
+        <a href="rooms.html">Record Register</a>
+        <a href="addrooms.html">Add New Rooms</a>
+        <a href="addhotels.html">Add New Hotels</a>
+        <a href="notification.html">🔔 Notifications</a>
+        <a href="booking.html">Dashboard</a>
+    </div>
+    
+    <script>
+        function toggleDrawer() {
+            const drawer = document.getElementById("rightDrawer");
+            drawer.classList.toggle("open");
+        }
+    </script>
+
+    <div class="container">
+        <header class="navbar">
+            <div class="nav-buttons">
+                <button onclick="location.href='index.html'">🏨 Rooms</button>
+                <button onclick="location.href='checkin.html'">🛏️ Check-In</button>
+            </div>
+            <button class="drawer-btn" onclick="toggleDrawer()">☰</button>
+        </header>
+        <h2>Add New Hotel</h2>
+        <form id="addHotelForm">
+            <label for="city">City:</label>
+            <select id="city" name="city" required></select>
+
+            <label>Hotel & Location:</label>
+            <div id="hotelLocationContainer"></div>
+            <button type="button" id="addHotelLocation">➕ Add Hotel & Location</button>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script src="js/constant.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const cityDropdown = document.getElementById("city");
+            const hotelLocationContainer = document.getElementById("hotelLocationContainer");
+            const addHotelLocationBtn = document.getElementById("addHotelLocation");
+            const form = document.getElementById("addHotelForm");
+
+            const CITIES = ["Madinah", "Mecca"];
+            CITIES.forEach(city => {
+                const option = document.createElement("option");
+                option.value = city;
+                option.textContent = city;
+                cityDropdown.appendChild(option);
+            });
+
+            function addHotelLocationEntry() {
+                const div = document.createElement("div");
+                div.classList.add("hotel-location-entry");
+                div.innerHTML = `
+                    <input type="text" name="hotelname[]" placeholder="Hotel Name" required>
+                    <input type="text" name="location[]" placeholder="Location" required>
+                    <button type="button" class="remove-entry">❌</button>
+                `;
+                hotelLocationContainer.appendChild(div);
+            }
+
+            addHotelLocationEntry();
+
+            addHotelLocationBtn.addEventListener("click", addHotelLocationEntry);
+
+            hotelLocationContainer.addEventListener("click", function (event) {
+                if (event.target.classList.contains("remove-entry")) {
+                    event.target.parentElement.remove();
+                }
+            });
+
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const hotelNames = Array.from(document.getElementsByName("hotelname[]")).map(input => input.value.trim());
+                const locations = Array.from(document.getElementsByName("location[]")).map(input => input.value.trim());
+
+                // Validate input fields before submission
+                if (hotelNames.includes("") || locations.includes("")) {
+                    alert("Please fill out all fields.");
+                    return;
+                }
+
+                let payload = {
+                    action: "addHotel",
+                    city: cityDropdown.value,
+                    hotelname: hotelNames,
+                    location: locations,
+                    active: "Active"
+                };
+
+                console.log("Sending Payload:", JSON.stringify(payload));
+
+                fetch(API_BASE_URL, {
+                    method: "POST",
+                    body: JSON.stringify(payload)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Response Data:", data);
+                    alert("Hotel(s) Added Successfully");
+                    
+                    // Reset the form after submission
+                    form.reset();
+                    hotelLocationContainer.innerHTML = "";
+                    addHotelLocationEntry();
+                })
+                .catch(error => {
+                    console.error("Error submitting data:", error);
+                    alert("An error occurred while adding the hotel.");
+                });
+            });
+        });
+    </script>
+</body>
+</html>
