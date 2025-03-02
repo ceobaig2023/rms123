@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check-In</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="navbar">
+    <div>
+        <a href="index.html">Rooms</a>
+        <a href="checkin.html">Check-In</a>
+    </div>
+    <button class="drawer-btn" onclick="toggleDrawer()">☰</button>
+</header>
+
+<!-- Right-side drawer -->
+<div id="rightDrawer" class="drawer">
+    <span class="close-btn" onclick="toggleDrawer()">✖</span>
+    <a href="rooms.html">Record Register</a>
+    <a href="addrooms.html">Add New Rooms</a>
+    <a href="addhotels.html">Add New Hotels</a>
+    <a href="notification.html">🔔 Notifications</a>
+    <a href="booking.html">Dashboard</a>
+</div>
+
+<script>
+    function toggleDrawer() {
+        const drawer = document.getElementById("rightDrawer");
+        drawer.classList.toggle("open");
+    }
+</script>
+
+    <div class="container">
+      <h2>Check-In</h2>       
+      <div id="cityButtonsContainer"></div>
+      <!-- City Selection Buttons -->
+      <!-- <div>
+          <button class="city-btn" data-city="Mecca">Mecca</button>
+          <button class="city-btn" data-city="Medina">Medina</button>
+      </div> -->
+  
+      <form id="checkinForm">
+          <label for="hotel" class="required">Hotel:</label>
+          <select id="hotel" required>
+              <option value="">Select a Hotel</option>
+          </select>
+  
+          <label for="room" class="required">Room:</label>
+          <select id="room" required>
+              <option value="">Select a Room</option>
+          </select>
+  
+          <label for="name" class="required">Name:</label>
+          <input type="text" id="name" name="name" minlength="5" required>
+  
+          <label for="checkin" class="required">Check-In:</label>
+          <input type="date" id="checkin" name="checkin" required>
+  
+          <label for="checkout" class="required">Check-Out:</label>
+          <input type="date" id="checkout" name="checkout" required>
+  
+          <label for="phone">Phone:</label>
+          <input type="text" id="phone" name="phone" minlength="10" maxlength="10" pattern="\d{10}">
+  
+          <label for="cost">Cost (SAR):</label>
+          <input type="number" id="cost" name="cost">
+  
+          <!-- <label for="image">Image:</label>
+          <input type="file" id="image" name="image" accept="image/*"> -->
+  
+          <button type="submit">Check-In</button>
+      </form>
+  </div>
+  
+  <div class="confirmation-message" id="confirmationMessage">Check-In successful!</div>
+  
+  <script src="js/checkin.js"></script>
+  <script src="js/constant.js"></script>
+  
+
+    <!-- <div class="container">
+        <h2>Check-In</h2>       
+        <form id="checkinForm">
+          <label for="hotel" class="required">Hotel:</label>
+          <select id="hotel" required>
+              <option value="">Loading hotel....</option>
+            </select>          
+            <label for="room" class="required">Room:</label>
+            <select id="room" required>
+                <option value="">Loading rooms....</option>
+              </select>
+
+               <label for="room" class="required">Room:</label>
+<select id="room" required>
+  <option value="">Loading rooms....</option>
+</select> -->
+<!-- <label for="room" class="required">Room:</label>
+<div class="required">
+  <div class="dropdown-header">
+    <span>Select a Room</span>
+    <span class="arrow">▼</span>
+  </div>
+  <ul class="dropdown-options" id="roomDropdown"></ul>
+</div> -->
+
+ <!--           <label for="name" class="required">Name:</label>
+            <input type="text" id="name" name="name" minlength="5" required>
+
+            <label for="checkin" class="required">Check-In:</label>
+            <input type="date" id="checkin" name="checkin" required>
+
+            <label for="checkout" class="required">Check-Out:</label>
+            <input type="date" id="checkout" name="checkout" required>
+
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" name="phone" minlength="10" maxlength="10" pattern="\d{10}">
+
+            <label for="cost">Cost (SAR):</label>
+            <input type="number" id="cost" name="cost">
+
+            <label for="image">Image:</label>
+            <input type="file" id="image" name="image" accept="image/*">
+
+            <button type="submit">Check-In</button>
+        </form>
+    </div>
+
+    <div class="confirmation-message" id="confirmationMessage">Check-In successful!</div>
+
+    <script src="js/checkin.js"></script>
+    <script src="js/constant.js"></script> -->
+</body>
+</html>

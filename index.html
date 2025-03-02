@@ -1,0 +1,248 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Management</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Management</title>
+    <link rel="stylesheet" href="css/styles.css">
+
+    <header class="navbar">
+        <div>
+            <a href="index.html">Rooms</a>
+            <a href="checkin.html">Check-In</a>
+        </div>
+        <button class="drawer-btn" onclick="toggleDrawer()">☰</button>
+    </header>
+    
+
+    <div id="rightDrawer" class="drawer">
+        <span class="close-btn" onclick="toggleDrawer()">✖</span>
+        <a href="rooms.html">Record Register</a>
+        <a href="addrooms.html">Add New Rooms</a>
+        <a href="addhotels.html">Add New Hotels</a>
+        <a href="notification.html">🔔 Notifications</a>
+        <a href="booking.html">Dashboard</a>
+    </div>
+    
+    <script>
+        function toggleDrawer() {
+            const drawer = document.getElementById("rightDrawer");
+            drawer.classList.toggle("open");
+        }
+    </script>
+
+    
+        <div class="container" id="rooms">
+            <h2>Hotels <span class="refresh-icon" onclick="fetchRooms()">🔄</span></h2>
+        
+
+            <div class="filters">
+                <label for="cityDropdown">City:</label>
+                <select id="cityDropdown">
+                    <script>
+                        const CITY_DROPDOWN = ["All", "Medinah", "Mecca"];
+            
+                        CITY_DROPDOWN.forEach(city => {
+                            document.write(`<option value="${city}">${city}</option>`);
+                        });
+                    </script>
+                </select>
+            
+                <label for="hotelDropdown">Hotel:</label>
+                <select id="hotelDropdown">
+                    <option value="All">All</option>
+                </select>
+            
+                <button onclick="fetchRooms()">Search</button>
+            </div>
+            
+        
+            <table>
+                <thead>
+                    <tr>
+                        <th>Room</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Checkout</th>
+                        <th>Remaining Time</th>
+                        <th>Room Cleaning</th>
+                        <th>Feedback</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="roomTableBody">
+                    <tr><td colspan="7">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+ 
+        
+
+        <div id="feedbackModal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="closeFeedbackModal()">&times;</span>
+                <h2>Feedback</h2>
+                <textarea id="feedbackText" placeholder="Write your feedback here..."></textarea>
+                <button onclick="submitFeedback()">Submit</button>
+            </div>
+        </div>
+
+    </div>
+    <script>
+        window.onload = function () {
+            const dropdownButton = document.getElementById("dropdownButton");
+            const dropdownMenu = document.getElementById("dropdownMenu");
+    
+            if (!dropdownButton || !dropdownMenu) {
+                console.error("Dropdown elements not found!");
+                return; // Stop execution if elements are missing
+            }
+    
+            dropdownButton.addEventListener("click", function (event) {
+                event.stopPropagation();
+                dropdownMenu.classList.toggle("show");
+            });
+    
+            document.addEventListener("click", function (event) {
+                if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                    dropdownMenu.classList.remove("show");
+                }
+            });
+        };
+    </script>
+    
+    <script src="js/navigation.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/constant.js"></script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Management</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div>
+            <a href="index.html">Rooms</a>
+            <a href="checkin.html">Check-In</a>
+        </div>
+        <button class="drawer-btn" onclick="toggleDrawer()">☰</button>
+    </header>
+
+    <div id="rightDrawer" class="drawer">
+        <span class="close-btn" onclick="toggleDrawer()">✖</span>
+        <a href="rooms.html">Record Register</a>
+        <a href="addrooms.html">Add New Rooms</a>
+        <a href="addhotels.html">Add New Hotels</a>
+        <a href="notification.html">🔔 Notifications</a>
+        <a href="booking.html">Dashboard</a>
+    </div>
+
+    <script>
+        function toggleDrawer() {
+            document.getElementById("rightDrawer").classList.toggle("open");
+        }
+    </script>
+
+    <div class="container" id="rooms">
+        <h2>Hotels <span class="refresh-icon" onclick="fetchRooms()">🔄</span></h2>
+
+        <div class="filters">
+            <label for="cityDropdown">City:</label>
+            <select id="cityDropdown">
+                <option value="All">All</option>
+                <option value="Medinah">Medinah</option>
+                <option value="Mecca">Mecca</option>
+            </select>
+
+            <label for="hotelDropdown">Hotel:</label>
+            <select id="hotelDropdown">
+                <option value="All">All</option>
+            </select>
+
+            <button onclick="fetchRooms()">Search</button>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+    const CITIES = ["Madinah", "Mecca"];
+    const cityDropdown = document.getElementById("cityDropdown");
+    const hotelDropdown = document.getElementById("hotelDropdown");
+    let dropdownData = {};
+
+    // Populate city dropdown dynamically
+    cityDropdown.innerHTML = '<option value="All">All</option>';
+    CITIES.forEach((city, index) => {
+        const option = document.createElement("option");
+        option.value = city;
+        option.textContent = city;
+        if (index === 0) {
+            option.selected = true; // First city is default
+        }
+        cityDropdown.appendChild(option);
+    });
+
+    // Fetch data from API
+    fetch(API_BASE_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "common" })
+    })
+    .then(response => response.json())
+    .then(data => {
+        dropdownData = data;
+        console.log(data);
+        cityDropdown.dispatchEvent(new Event("change")); // Trigger initial change event
+    })
+    .catch(error => console.error("Error fetching data:", error));
+
+    // Handle city dropdown change
+    cityDropdown.addEventListener("change", function () {
+        hotelDropdown.innerHTML = '<option value="All">All</option>'; // Default option
+
+        const selectedCity = this.value;
+        if (selectedCity !== "All" && dropdownData[selectedCity]) {
+            dropdownData[selectedCity].forEach(hotel => {
+                const option = document.createElement("option");
+                option.value = hotel;
+                option.textContent = hotel;
+                hotelDropdown.appendChild(option);
+            });
+        }
+    });
+});
+
+        </script>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Room</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Checkout</th>
+                    <th>Remaining Time</th>
+                    <th>Room Cleaning</th>
+                    <th>Feedback</th>
+                </tr>
+            </thead>
+            <tbody id="roomTableBody">
+                <tr><td colspan="7">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="js/constant.js"></script>
+    <script src="js/index.js"></script>
+</body>
+</html>

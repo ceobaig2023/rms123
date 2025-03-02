@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select a City</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div>
+            <a href="index.html">Rooms</a>
+            <a href="checkin.html">Check-In</a>
+        </div>
+        <button class="drawer-btn" onclick="toggleDrawer()">☰</button>
+    </header>
+    
+    <!-- Right-side drawer -->
+    <div id="rightDrawer" class="drawer">
+        <span class="close-btn" onclick="toggleDrawer()">✖</span>
+        <a href="rooms.html">Record Register</a>
+        <a href="addrooms.html">Add New Rooms</a>
+        <a href="addhotels.html">Add New Hotels</a>
+        <a href="notification.html">🔔 Notifications</a>
+        <a href="booking.html">Dashboard</a>
+    </div>
+    
+    <script>
+        function toggleDrawer() {
+            const drawer = document.getElementById("rightDrawer");
+            drawer.classList.toggle("open");
+        }
+    </script>
+
+    <div class="container">
+        <h2>Select a City</h2>
+        <div id="cityList"></div>
+    </div>
+
+    <script src="js/city.js"></script>
+    <script src="js/constant.js"></script>
+</body>
+</html>

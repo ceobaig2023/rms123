@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Room</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+       <header class="navbar"></header>
+          <div>
+              <a href="index.html">Rooms</a>
+              <a href="checkin.html">Check-In</a>
+          </div>
+          <button class="drawer-btn" onclick="toggleDrawer()">☰</button>
+       </header>
+    
+    <!-- Right-side drawer -->
+    <div id="rightDrawer" class="drawer">
+        <span class="close-btn" onclick="toggleDrawer()">✖</span>
+        <a href="index.html">Rooms</a>
+        <a href="checkin.html">Check-In</a>
+        <a href="rooms.html">Record Register</a>
+        <a href="addrooms.html">Add New Rooms</a>
+        <a href="addhotels.html">Add New Hotels</a>
+        <a href="notification.html">🔔 Notifications</a>
+        <a href="booking.html">Dashboard</a>
+    </div>
+    
+    <script>
+        function toggleDrawer() {
+            const drawer = document.getElementById("rightDrawer");
+            drawer.classList.toggle("open");
+        }
+    </script>
+
+    <div class="container">
+        <header class="navbar">
+            <div class="nav-buttons">
+                <button onclick="location.href='index.html'">🏨 Rooms</button>
+                <button onclick="location.href='checkin.html'">🛏️ Check-In</button>
+            </div>
+            <button class="drawer-btn" onclick="toggleDrawer()">☰</button>
+        </header>
+        <h2>Add New Rooms</h2>
+        <form id="addRoomForm">
+            <label for="city">City:</label>
+            <select id="city" name="city" required>
+            </select>
+
+            <label for="hotel">Hotel:</label>
+            <select id="hotel" name="hotel" required>
+                <option value="">Select a hotel</option>
+            </select>
+            <p>Rooms</p>
+
+            <div id="roomContainer"></div>
+
+            <button type="button" id="addRoom">➕ Add Room</button>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script src="js/constant.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const roomContainer = document.getElementById("roomContainer");
+            const addRoomBtn = document.getElementById("addRoom");
+            const form = document.getElementById("addRoomForm");
+            const cityDropdown = document.getElementById("city");
+            const hotelDropdown = document.getElementById("hotel");
+            let dropdownData = {};
+
+            const CITIES =["Madinah", "Mecca"];
+            
+            CITIES.forEach((city, index) => {
+                const option = document.createElement("option");
+                option.value = city;
+                option.textContent = city;
+                if (index === 0) {
+                    option.selected = true;
+                }
+                cityDropdown.appendChild(option);
+            });
+
+            fetch(API_BASE_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "common" })
+            })
+            .then(response => response.json())
+            .then(data => {
+                dropdownData = data;
+                console.log(data)
+                cityDropdown.dispatchEvent(new Event("change"));
+            })
+            .catch(error => console.error("Error fetching data:", error));
+
+            // cityDropdown.addEventListener("change", function () {
+            //     hotelDropdown.innerHTML = '<option value="">Select a hotel</option>';
+            //     const selectedCity = this.value;
+                
+            //     if (dropdownData[selectedCity]) {
+            //         let hotelSet = new Set();
+            //         Object.values(dropdownData[selectedCity]).forEach(hotelArray => {
+            //             hotelArray.forEach(hotel => hotelSet.add(hotel));
+            //         });
+            //         hotelSet.forEach(hotel => {
+            //             const option = document.createElement("option");
+            //             option.value = hotel;
+            //             option.textContent = hotel;
+            //             hotelDropdown.appendChild(option);
+            //         });
+            //     }
+            // });
+            cityDropdown.addEventListener("change", function () {
+            hotelDropdown.innerHTML = '<option value="">Select a hotel</option>';
+            const selectedCity = this.value;
+
+            if (dropdownData[selectedCity]) {
+                dropdownData[selectedCity].forEach(hotel => {
+                const option = document.createElement("option");
+                option.value = hotel;
+                option.textContent = hotel;
+                hotelDropdown.appendChild(option);
+                });
+               }
+            });
+
+            function addRoomEntry() {
+                const div = document.createElement("div");
+                div.classList.add("room-entry");
+                div.innerHTML = `
+                    <div class="room-row">
+                        <input type="text" name="room[]" placeholder="Room Name" required>
+                        <input type="number" name="capacity[]" placeholder="Capacity" min="1" required>
+                        <input type="number" name="price[]" placeholder="Price (SAR)" required>
+                        <button type="button" class="remove-room">❌</button>
+                    </div>
+                `;
+                roomContainer.appendChild(div);
+            }
+
+            addRoomEntry(); // Ensure at least one entry is present
+            
+            addRoomBtn.addEventListener("click", addRoomEntry);
+
+            roomContainer.addEventListener("click", function (event) {
+                if (event.target.classList.contains("remove-room")) {
+                    event.target.parentElement.remove();
+                    if (roomContainer.children.length === 0) {
+                        addRoomEntry(); // Ensure at least one row remains
+                    }
+                }
+            });
+
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+                let payload = {
+                    action: "addRooms",
+                    city: cityDropdown.value,
+                    hotel: hotelDropdown.value,
+                    location: "London Golden Gate", 
+                    rooms: [],
+                    capacity: [],
+                    price: []
+                };
+                
+                document.getElementsByName("room[]").forEach(room => payload.rooms.push(room.value));
+                document.getElementsByName("capacity[]").forEach(capacity => payload.capacity.push(parseInt(capacity.value)));
+                document.getElementsByName("price[]").forEach(price => payload.price.push(parseInt(price.value)));
+                
+                console.log("Payload:", JSON.stringify(payload));
+
+                fetch(API_BASE_URL, {
+                    method: "POST",
+                    body: JSON.stringify(payload)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert("Rooms Added Successfully");
+                    form.reset();
+                    roomContainer.innerHTML = "";
+                    addRoomEntry();
+                })
+                .catch(error => console.error("Error submitting data:", error));
+            });
+        });
+    </script>
+</body>
+</html>
+

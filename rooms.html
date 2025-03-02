@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Logs</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="navbar">
+        <div>
+            <a href="index.html">Rooms</a>
+            <a href="checkin.html">Check-In</a>
+        </div>
+        <button class="drawer-btn" onclick="toggleDrawer()">☰</button>
+    </header>
+    
+    <!-- Right-side drawer -->
+    <div id="rightDrawer" class="drawer">
+        <span class="close-btn" onclick="toggleDrawer()">✖</span>
+        <a href="rooms.html">Record Register</a>
+        <a href="addrooms.html">Add New Rooms</a>
+        <a href="addhotels.html">Add New Hotels</a>
+        <a href="notification.html">🔔 Notifications</a>
+        <a href="booking.html">Dashboard</a>
+    </div>
+    
+    <script>
+        function toggleDrawer() {
+            const drawer = document.getElementById("rightDrawer");
+            drawer.classList.toggle("open");
+        }
+    </script>
+<h1></h1><h1></h1><br></body></br>
+    <div class="refresh-icon" onclick="fetchData()"><b>Records of ROOMS</b> 🔄 </div>
+    <table id="logsTable">
+        
+        <thead>
+            <tr>
+                <th>Room</th>
+                <th>Name</th>
+                <th>CheckIn</th>
+                <th>CheckOut</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be populated here -->
+        </tbody>
+    </table>
+
+    <script src="js/rooms.js"></script>
+    <script src="js/constant.js"></script>    
+</body>
+</html>

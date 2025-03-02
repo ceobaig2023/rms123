@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select a Hotel</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div>
+            <a href="index.html">Rooms</a>
+            <a href="checkin.html">Check-In</a>
+        </div>
+        <button class="drawer-btn" onclick="toggleDrawer()">☰</button>
+    </header>
+    
+    <!-- Right-side drawer -->
+    <div id="rightDrawer" class="drawer">
+        <span class="close-btn" onclick="toggleDrawer()">✖</span>
+        <a href="rooms.html">Record Register</a>
+        <a href="addrooms.html">Add New Rooms</a>
+        <a href="addhotels.html">Add New Hotels</a>
+        <a href="notification.html">🔔 Notifications</a>
+        <a href="booking.html">Dashboard</a>
+    </div>
+    
+    <script>
+        function toggleDrawer() {
+            const drawer = document.getElementById("rightDrawer");
+            drawer.classList.toggle("open");
+        }
+    </script>
+
+    <div class="container">
+        <h2 id="cityTitle">Hotels</h2>
+
+        <!-- Category Filter Dropdown -->
+        <label for="hotelCategoryFilter">Filter by Category:</label>
+        <select id="hotelCategoryFilter">
+            <option value="all">All Categories</option>
+        </select>
+
+        <div id="hotelList"></div>
+    </div>
+
+    <script src="js/navigation.js"></script>
+    <script src="js/hotel.js"></script>
+    <script src="js/constant.js"></script>
+</body>
+</html>
