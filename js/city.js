@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 cityButton.style.marginBottom = "5px";
                 cityButton.onclick = () => {
                     localStorage.setItem("selectedCity", city.name);
-                    window.location.href = "index.html.html";
+                    window.location.href = "index.html";
                 };
                 cityList.appendChild(cityButton);
             });
